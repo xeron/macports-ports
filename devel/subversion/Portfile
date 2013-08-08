@@ -100,22 +100,20 @@ pre-test {
 
 variant mod_dav_svn description {Install the subversion apache module (mod_dav_svn)} {
     depends_build           path:apache2/bin/apxs:apache2
-    configure.args-append   --with-apxs=${prefix}/apache2/bin/apxs \
-                            --disable-mod-activation
-    configure.args-delete   --without-apxs
+    configure.args-replace  --without-apxs --with-apxs=${prefix}/apache2/bin/apxs
+    configure.args-append   --disable-mod-activation
     destroot.violate_mtree  yes
 }
 
 variant no_bdb description {Build without support for BerkeleyDB repositories} {
     depends_lib-delete      port:db46
-    configure.args-delete   --with-berkeley-db=:${prefix}/include/db46:${prefix}/lib/db46:db-4.6
-    configure.args-append   --without-berkeley-db
+    configure.args-replace  --with-berkeley-db=:${prefix}/include/db46:${prefix}/lib/db46:db-4.6 \
+                            --without-berkeley-db
 }
 
 variant mac_os_x_server_mod_dav_svn description {Unsupported - attempt to build the subversion apache module with apple supplied apache2} {
-    configure.args-append   --with-apxs=/opt/apache2/bin/apxs \
-                            --disable-mod-activation
-    configure.args-delete   --without-apxs
+    configure.args-replace  --without-apxs --with-apxs=/opt/apache2/bin/apxs
+    configure.args-append   --disable-mod-activation
     destroot.violate_mtree  yes
     post-install {
         ui_warn "This variant (+mac_os_x_server_mod_dav_svn) builds against the Apple-supplied apache2 in /opt/apache2 and thus may have problems that the normal variant (+mod_dav_svn) which builds against the macports supplied apache2 will not have."
