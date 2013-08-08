@@ -44,7 +44,8 @@ post-patch {
         ${worksrcpath}/subversion/libsvn_subr/config_impl.h
 }
 
-configure.args          --with-apr=${prefix}/bin/apr-1-config \
+configure.args          --disable-keychain \
+                        --with-apr=${prefix}/bin/apr-1-config \
                         --with-apr-util=${prefix}/bin/apu-1-config \
                         --with-berkeley-db=:${prefix}/include/db46:${prefix}/lib/db46:db-4.6 \
                         --with-libmagic=${prefix} \
@@ -143,13 +144,17 @@ variant unicode_path description {Installs a hack to workaround Mac OS X unicode
     }
 }
 
-variant disable_keychain description {Disables support for the Mac OS X Keychain} {
-    configure.args-append   --disable-keychain
-}
-
-# CarbonCore/MacTypes.h: No such file or directory
-platform puredarwin {
-    configure.args-append   --disable-keychain
+platform macosx {
+    # Legacy negative variant to be removed after August 2014.
+    variant disable_keychain conflicts osxkeychain description {Legacy compatibility variant} {}
+    variant osxkeychain conflicts disable_keychain description {Enable OS X Keychain support} {
+        configure.args-delete   --disable-keychain
+    }
+    if {[variant_isset disable_keychain]} {
+        default_variants        -osxkeychain
+    } else {
+        default_variants        +osxkeychain
+    }
 }
 
 livecheck.type          regex
