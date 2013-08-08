@@ -34,9 +34,9 @@ depends_run             port:curl-ca-bundle
 
 master_sites            apache:subversion
 use_bzip2               yes
-checksums               md5     f2ee0471b8a560f5efa0f2349d9c9ab9 \
-                        sha1    7705819a0037c14fb32eef36f2e57a803217c689 \
-                        rmd160  aaff1efd8e1b8112603eb7855cb546316fe88707
+checksums               sha1    7705819a0037c14fb32eef36f2e57a803217c689 \
+                        rmd160  aaff1efd8e1b8112603eb7855cb546316fe88707 \
+                        sha256  faaaaedba25777331e761884598af1dd9fe33631d6415b2e0ba5348867c4edb4
 
 patchfiles              config_impl.h.patch
 post-patch {
@@ -44,14 +44,13 @@ post-patch {
         ${worksrcpath}/subversion/libsvn_subr/config_impl.h
 }
 
-configure.args          --with-berkeley-db=:${prefix}/include/db46:${prefix}/lib/db46:db-4.6 \
-                        --with-apr=${prefix}/bin/apr-1-config \
+configure.args          --with-apr=${prefix}/bin/apr-1-config \
                         --with-apr-util=${prefix}/bin/apu-1-config \
-                        --without-apxs \
-                        --mandir=\\\${prefix}/share/man \
-                        --with-serf=${prefix} \
-                        --with-sasl=${prefix} \
+                        --with-berkeley-db=:${prefix}/include/db46:${prefix}/lib/db46:db-4.6 \
                         --with-libmagic=${prefix} \
+                        --with-sasl=${prefix} \
+                        --with-serf=${prefix} \
+                        --without-apxs \
                         --without-gnome-keyring
 pre-configure {
     reinplace "s|hardcode_direct=yes|hardcode_direct=no|g" \
@@ -62,7 +61,7 @@ post-configure {
 }
 
 use_parallel_build      yes
-build.target            all tools
+build.target-append     tools
 
 destroot.target-append  install-tools
 post-destroot {
@@ -103,7 +102,6 @@ variant mod_dav_svn description {Install the subversion apache module (mod_dav_s
     configure.args-append   --with-apxs=${prefix}/apache2/bin/apxs \
                             --disable-mod-activation
     configure.args-delete   --without-apxs
-
     destroot.violate_mtree  yes
 }
 
@@ -117,9 +115,7 @@ variant mac_os_x_server_mod_dav_svn description {Unsupported - attempt to build 
     configure.args-append   --with-apxs=/opt/apache2/bin/apxs \
                             --disable-mod-activation
     configure.args-delete   --without-apxs
-
     destroot.violate_mtree  yes
-
     post-install {
         ui_warn "This variant (+mac_os_x_server_mod_dav_svn) builds against the Apple-supplied apache2 in /opt/apache2 and thus may have problems that the normal variant (+mod_dav_svn) which builds against the macports supplied apache2 will not have."
     }
@@ -128,13 +124,13 @@ variant mac_os_x_server_mod_dav_svn description {Unsupported - attempt to build 
 variant tools description {Install some optional extra subversion tools} {
     post-destroot {
         xinstall -d -m 755 ${destroot}${prefix}/share/${name}
-        delete ${worksrcpath}/tools/diff/
-        delete ${worksrcpath}/tools/server-side/mod_dontdothat
-        eval delete [glob ${worksrcpath}/tools/server-side/*{.o,.lo,.c}]
-        delete ${worksrcpath}/tools/server-side/fsfs-stats
-        delete ${worksrcpath}/tools/server-side/svn-populate-node-origins-index
-        delete ${worksrcpath}/tools/server-side/svn-rep-sharing-stats
-        delete ${worksrcpath}/tools/server-side/svnauthz-validate
+        eval delete ${worksrcpath}/tools/diff/ \
+            ${worksrcpath}/tools/server-side/mod_dontdothat \
+            [glob ${worksrcpath}/tools/server-side/*{.o,.lo,.c}] \
+            ${worksrcpath}/tools/server-side/fsfs-stats \
+            ${worksrcpath}/tools/server-side/svn-populate-node-origins-index \
+            ${worksrcpath}/tools/server-side/svn-rep-sharing-stats \
+            ${worksrcpath}/tools/server-side/svnauthz-validate
         copy ${worksrcpath}/tools ${destroot}${prefix}/share/${name}/tools
     }
 }
@@ -158,4 +154,4 @@ platform puredarwin {
 
 livecheck.type          regex
 livecheck.url           http://svn.apache.org/repos/asf/subversion/tags/
-livecheck.regex         "(\\d+\\.\\d+\\.\\d+)/"
+livecheck.regex         {(\d+\.\d+\.\d+)/}
