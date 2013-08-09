@@ -1,42 +1,41 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 # $Id$
 
-PortSystem 1.0
+PortSystem  1.0
 
-name                    subversion
-version                 1.8.1
-revision                1
-categories              devel
-platforms               darwin
-license                 Apache-2
-maintainers             geeklair.net:dluke blair
+name        subversion
+version             1.8.1
+revision            1
+categories          devel
+platforms           darwin
+license             Apache-2
+maintainers         geeklair.net:dluke blair
 
-description             subversion (svn) -- a version control system \
-                        designed to be a better cvs
-long_description        Subversion (svn) is a version control system \
-                        designed to be as similar to cvs(1) as possible, \
-                        while fixing many outstanding problems with \
-                        cvs(1).
-homepage                http://subversion.apache.org/
+description         subversion (svn) -- a version control system \
+                    designed to be a better cvs
+long_description    Subversion (svn) is a version control system \
+                    designed to be as similar to CVS as possible, \
+                    while fixing many outstanding problems with CVS.
+homepage            http://subversion.apache.org/
 
-depends_lib             port:apr \
-                        port:apr-util \
-                        port:cyrus-sasl2 \
-                        port:db46 \
-                        port:expat \
-                        port:file \
-                        port:gettext \
-                        port:libcomerr \
-                        port:libiconv \
-                        port:serf1 \
-                        port:sqlite3
-depends_run             port:curl-ca-bundle
+depends_lib port:apr \
+            port:apr-util \
+            port:cyrus-sasl2 \
+            port:db46 \
+            port:expat \
+            port:file \
+            port:gettext \
+            port:libcomerr \
+            port:libiconv \
+            port:serf1 \
+            port:sqlite3
+depends_run port:curl-ca-bundle
 
-master_sites            apache:subversion
-use_bzip2               yes
-checksums               sha1    7705819a0037c14fb32eef36f2e57a803217c689 \
-                        rmd160  aaff1efd8e1b8112603eb7855cb546316fe88707 \
-                        sha256  faaaaedba25777331e761884598af1dd9fe33631d6415b2e0ba5348867c4edb4
+master_sites    apache:subversion
+use_bzip2       yes
+checksums       sha1    7705819a0037c14fb32eef36f2e57a803217c689 \
+                rmd160  aaff1efd8e1b8112603eb7855cb546316fe88707 \
+                sha256  faaaaedba25777331e761884598af1dd9fe33631d6415b2e0ba5348867c4edb4
 
 patchfiles              config_impl.h.patch
 post-patch {
@@ -44,15 +43,15 @@ post-patch {
         ${worksrcpath}/subversion/libsvn_subr/config_impl.h
 }
 
-configure.args          --disable-keychain \
-                        --with-apr=${prefix}/bin/apr-1-config \
-                        --with-apr-util=${prefix}/bin/apu-1-config \
-                        --with-berkeley-db=:${prefix}/include/db46:${prefix}/lib/db46:db-4.6 \
-                        --with-libmagic=${prefix} \
-                        --with-sasl=${prefix} \
-                        --with-serf=${prefix} \
-                        --without-apxs \
-                        --without-gnome-keyring
+configure.args  --disable-keychain \
+                --with-apr=${prefix}/bin/apr-1-config \
+                --with-apr-util=${prefix}/bin/apu-1-config \
+                --with-berkeley-db=:${prefix}/include/db46:${prefix}/lib/db46:db-4.6 \
+                --with-libmagic=${prefix} \
+                --with-sasl=${prefix} \
+                --with-serf=${prefix} \
+                --without-apxs \
+                --without-gnome-keyring
 pre-configure {
     reinplace "s|hardcode_direct=yes|hardcode_direct=no|g" \
         ${worksrcpath}/configure
@@ -84,7 +83,7 @@ post-activate {
     }
 }
 
-test.run                yes
+test.run    yes
 test.target             check
 test.env                CLEANUP=true
 pre-test {
