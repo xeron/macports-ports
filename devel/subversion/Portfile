@@ -18,10 +18,6 @@ foreach branch ${perl5.branches} {
         }
     }
 }
-subport subversion-perlbindings {
-    replaced_by     subversion-perlbindings-5.12
-    PortGroup       obsolete 1.0
-}
 
 
 # General
@@ -39,10 +35,10 @@ homepage            http://subversion.apache.org/
 switch -regexp ${subport} {
     perl {
         categories-append       perl
-        description             Perl bindings for the Subversion \
-                                version control system
+        description             Perl ${perl5.branch} bindings for \
+                                the Subversion version control system
         long_description-append These bindings provide access to the \
-                                Subversion API from Perl.
+                                Subversion API from Perl ${perl5.branch}.
     }
     default {
         description             A version control system designed to \
