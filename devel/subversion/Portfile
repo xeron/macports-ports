@@ -35,8 +35,8 @@ homepage            http://subversion.apache.org/
 switch -regexp ${subport} {
     perl {
         categories-append       perl
-        description             Perl ${perl5.branch} bindings for \
-                                the Subversion version control system
+        description             Perl ${perl5.branch} bindings for the \
+                                Subversion version control system
         long_description-append These bindings provide access to the \
                                 Subversion API from Perl ${perl5.branch}.
     }
@@ -109,11 +109,11 @@ post-configure {
 
 
 # Build
-if {${subport} ne ${name}} {
-    use_parallel_build  no
-}
 switch -regexp ${subport} {
-    perl    {build.target           swig-pl}
+    perl {
+        use_parallel_build          no
+        build.target                swig-pl
+    }
     default {build.target-append    tools}
 }
 
