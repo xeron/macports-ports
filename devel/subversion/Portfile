@@ -87,9 +87,6 @@ switch -regexp ${subport} {
 
 
 # Configure
-switch -regexp ${subport} {
-    perl    {configure.env  ac_cv_path_PERL=${prefix}/bin/perl${perl5.branch}}
-}
 configure.args  --disable-keychain \
                 --with-apr=${prefix}/bin/apr-1-config \
                 --with-apr-util=${prefix}/bin/apu-1-config \
@@ -99,6 +96,9 @@ configure.args  --disable-keychain \
                 --with-serf=${prefix} \
                 --without-apxs \
                 --without-gnome-keyring
+switch -regexp ${subport} {
+    perl    {configure.args-append  PERL=${prefix}/bin/perl${perl5.branch}}
+}
 pre-configure {
     reinplace "s|hardcode_direct=yes|hardcode_direct=no|g" \
         ${worksrcpath}/configure
