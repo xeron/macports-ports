@@ -57,10 +57,10 @@ depends_lib port:apr \
             port:cyrus-sasl2 \
             port:db46 \
             port:expat \
-            port:file \
             port:gettext \
             port:libcomerr \
             port:libiconv \
+            port:libmagic \
             port:serf1 \
             port:sqlite3
 switch -regexp ${subport} {
