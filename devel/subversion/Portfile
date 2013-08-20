@@ -58,7 +58,8 @@ depends_lib port:apr \
             port:libiconv \
             port:libmagic \
             port:serf1 \
-            port:sqlite3
+            port:sqlite3 \
+            port:zlib
 switch -regexp ${subport} {
     perl    {depends_lib-append port:${name} port:perl${perl5.branch}}
     default {depends_run        port:curl-ca-bundle}
@@ -94,6 +95,7 @@ configure.args  --disable-keychain \
                 --with-libmagic=${prefix} \
                 --with-sasl=${prefix} \
                 --with-serf=${prefix} \
+                --with-zlib=${prefix} \
                 --without-apxs \
                 --without-gnome-keyring
 switch -regexp ${subport} {
