@@ -34,7 +34,7 @@ checksums           git-2.32.0.tar.xz \
 
 perl5.require_variant   yes
 perl5.conflict_variants yes
-perl5.branches          5.28 5.30
+perl5.branches          5.28 5.30 5.32
 perl5.default_branch    5.28
 perl5.create_variants   ${perl5.branches}
 
@@ -42,7 +42,8 @@ depends_lib-append  port:curl \
                     port:zlib \
                     path:lib/libssl.dylib:openssl \
                     port:expat \
-                    port:libiconv
+                    port:libiconv \
+                    port:python39
 
 depends_run-append  port:p${perl5.major}-authen-sasl \
                     port:p${perl5.major}-error \
@@ -76,6 +77,7 @@ build.args          CFLAGS="${CFLAGS}" \
                     OPENSSLDIR=${prefix} \
                     ICONVDIR=${prefix} \
                     PERL_PATH="${prefix}/bin/perl${perl5.major}" \
+                    PYTHON_PATH="${prefix}/bin/python3.9" \
                     NO_FINK=1 \
                     NO_DARWIN_PORTS=1 \
                     NO_R_TO_GCC_LINKER=1 \
