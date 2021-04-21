@@ -46,8 +46,6 @@ depends_lib-append      port:python39 \
 # TODO: when icu is upgraded to v68.x, use MacPorts'.
 #depends_lib-append             port:icu
 
-use_xcode               yes
-
 # error: 'atomic_load<v8::internal::OwnedVector<const unsigned char> >' is unavailable: introduced in macOS 10.9
 set min_darwin 13
 if { ${os.major} < ${min_darwin} } {
@@ -102,9 +100,6 @@ configure.args-append   --shared-openssl-libpath=${prefix}/lib
 supported_archs         i386 x86_64 arm64
 
 universal_variant       no
-
-# "V8 doesn't like cache."
-configure.ccache        no
 
 test.run                yes
 test.cmd                ${build.cmd} -j${build.jobs}
